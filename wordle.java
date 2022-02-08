@@ -26,6 +26,7 @@ class check{
     public static int[] test(String actualWord, String guess){
         final String GREEN = "\u001B[42m";
         final String YELLOW = "\u001B[43m";
+        final String RED = "\u001B[41m";
         final String GREY = ""; //passing nothing will make the text grey
         
         String[] sol = {"", "", "", "", ""};
@@ -45,7 +46,7 @@ class check{
                 score[i] = 1;
             }
             else{
-                sol[i] = GREY;
+                sol[i] = RED;
                 score[i] = 0;
             }
         }
@@ -135,6 +136,7 @@ class wordle {
     
     final static String GREEN = "\u001B[42m";
     final static String YELLOW = "\u001B[43m";
+    final static String RED = "\u001B[41m";
     final static String GREY = ""; //passing nothing will make the text grey
     
 
