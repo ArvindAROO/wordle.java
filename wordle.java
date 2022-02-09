@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
  
 
@@ -23,14 +24,14 @@ class Colorize{
 }
 
 class check{
-    public static int[] test(String actualWord, String guess){
+    public static String[] test(String actualWord, String guess){
         final String GREEN = "\u001B[42m";
         final String YELLOW = "\u001B[43m";
         final String RED = "\u001B[41m";
         final String GREY = ""; //passing nothing will make the text grey
         
         String[] sol = {"", "", "", "", ""};
-        int[] score = {-1, -1, -1, -1, -1};
+        String[] score = {"", "", "", "", ""};
         // for each letter in guess
         // if it is in correcte dposition in actual word, put green
         // if it is in wrong position, put yellow
@@ -38,16 +39,16 @@ class check{
         for(int i=0; i<actualWord.length(); i++){
             if(actualWord.charAt(i) == guess.charAt(i)){
                 sol[i] = GREEN;
-                score[i] = 2;
+                score[i] = "2";
             }
             else if(actualWord.indexOf(guess.charAt(i)) != -1){
                 // actualWord.contains(guess.charAt(i))){
                 sol[i] = YELLOW;
-                score[i] = 1;
+                score[i] = "1";
             }
             else{
                 sol[i] = RED;
-                score[i] = 0;
+                score[i] = "0";
             }
         }
         
@@ -94,13 +95,37 @@ class play{
         
     private String[] allowed_words;
     private String[] possible_words;
+    private ArrayList<String[]> result;
+    
     public void load() throws IOException{
         Object[] data = load.loadData();
         this.allowed_words = (String[]) data[0];
         this.possible_words = (String[]) data[1];
         
     }
+
+    public void results () {
+        String MISS = "⬛", MISPLACED = "🟨", EXACT= "🟩";
+            
+        HashMap <String, String> map = new HashMap<String, String>();
+        map.put("0", MISS);
+        map.put("1", MISPLACED);
+        map.put("2", EXACT);
+
+        for(int i=0; i<this.result.size(); i++){
+            // System.out.println("Score: " + Arrays.toString(this.result.get(i)));
+            String[] score = this.result.get(i);
+            for(int j=0; j<score.length; j++){
+                System.out.print(map.get(score[j]));
+            }
+            System.out.println();
+
+
+        }
+    }
+
     public void game() {
+        this.result = new ArrayList<String[]>();
 
         //randomly choose a word from possible words
         int num = (int) (Math.random() * this.possible_words.length);
@@ -111,11 +136,13 @@ class play{
             String guess = System.console().readLine();
             //check if guess in allowed words
             if(Arrays.asList(this.allowed_words).contains(guess)){
-                check.test(word, guess);
+                String[] score = check.test(word, guess);
+                this.result.add(score);
                 attempts++;
 
                 if (guess.equals(word)){
                     System.out.println(GREEN + "You win!" + ANSI_RESET);
+                    results();
                     return;
                 }
                 
@@ -128,6 +155,7 @@ class play{
         }
         System.out.println("You lose!");
         System.out.println(RED + "The word was: " + word + ANSI_RESET);
+        results();
     }
 
 }
