@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+import org.junit.jupiter.api.Test;
  
 
 class Colorize{
@@ -183,4 +188,15 @@ class wordle {
         p.game();
 
     }
+}
+
+
+
+class MyFirstJUnitJupiterTests {
+
+    @Test
+    void test1() {
+        assertEquals(2, 2);
+    }
+
 }
